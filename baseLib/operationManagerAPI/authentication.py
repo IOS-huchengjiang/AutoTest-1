@@ -9,8 +9,9 @@ from baseLib.baseUtils.log import logging
 def login(usrDictionary):
     strUserName = usrDictionary.get('userName')
     strPassword = usrDictionary.get('password')
-    loginActionList = ['/Admin/queryUserNameAction_srandNum?time=1540957646874',
-                       '/Admin/j_spring_security_check']
+    loginActionList = ['/Admin/queryUserNameAction_srandNum',
+                       '/Admin/j_spring_security_check',
+                       '/Admin/terminalUserManage/terminalUserAction_toUserManage']
     getSrandNumResponse = requests.get(const._global_configuration().OptionManagerHttpUrl + loginActionList[0])
     responseCookies = getSrandNumResponse.cookies
     strSandNum = re.findall(r"%7B%27mcryptKey%27%3A%27(.+?)%27%7D",getSrandNumResponse.text)
@@ -25,10 +26,16 @@ def login(usrDictionary):
                              'j_username': strUserName,
                              'validate':'',
                              'message':''}
+    responseCookies.set('tvpay_login_name', strUserName)
     responseByPostForm = requests.post(const._global_configuration().OptionManagerHttpUrl + loginActionList[1],
                                        cookies = responseCookies,
                                        data = securityCheckFormPara)
-
     responseCookies.update(responseByPostForm.cookies)
-    responseCookies.set('tvpay_login_name', strUserName)
+
+    responseAfterLogin = requests.get(const._global_configuration().OptionManagerHttpUrl + loginActionList[2],
+                                       cookies = responseCookies)
+    if responseAfterLogin.text.find('终端用户列表'):
+        print(strUserName + '登录成功')
+    else:
+        print(strUserName + '登录失败')
     return responseCookies
