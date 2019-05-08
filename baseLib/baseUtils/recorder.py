@@ -3,16 +3,18 @@ import logging
 import BeautifulReport
 from configuration import global_v
 import inspect
+import datetime
 
 
 class runningRecorder(object):
     def __init__(self, desc=None, logpath='log_testRunner.log'):
         self.desc = desc
-        logging.basicConfig(filename='log_testRunner.log', level=logging.INFO)
+        logging.basicConfig(filename='log_testRunner_{date_now}.log'.format(date_now=datetime.datetime.strftime(datetime.datetime.now(),'%Y-%m-%d %H-%M-%S')), level=logging.INFO)
 
     def myInfo(self, context):
-        print(context)
-        logging.info(context)
+        style = '%s:%s'%(datetime.datetime.strftime(datetime.datetime.now(),'%Y-%m-%d %H:%M:%S'), context)
+        print(style)
+        logging.info(style)
 
     def __call__(self, func):  # 接收函数
         @functools.wraps(func)

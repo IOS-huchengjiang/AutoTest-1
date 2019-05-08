@@ -46,9 +46,4 @@ def sqlAll(sql):
 # db = cx_Oracle.connect('username', 'password', tns)
 # db.close()
 
-randomValidateId = '0bf0a0d9-6121-48d8-a5db-1db2e81ab21e'
-sql = "select t.random_code from sms_request t where t.random_id = '%s'"%randomValidateId
-# sql = "select t.random_code from sms_request t where t.random_id = '0bf0a0d9-6121-48d8-a5db-1db2e81ab21e'"
-randomCode = sqlOne(sql)
-print(randomCode[0])
 

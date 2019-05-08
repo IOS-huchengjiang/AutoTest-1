@@ -2,11 +2,11 @@ import requests
 from lxml import etree
 from baseLib.commonAPI import OracleQuery
 from configuration import const
-from baseLib.baseUtils.recorder import logging
+from baseLib.baseUtils.recorder import runningRecorder
 
 
 #代发费率修改
-@logging(level='INFO', desc='修改付款费率')
+@runningRecorder(desc='修改付款费率')
 def mgmodifyDisburseFee(inputFormParam, cookie):
     mgmodifyActionList = ['/Admin/withdrawManage/merchantTransferConfigManageAction_mgtoUpdateBatchpay',
                           '/Admin/withdrawManage/merchantTransferConfigManageAction_mgmodifyBatchpay']
@@ -32,9 +32,9 @@ def mgmodifyDisburseFee(inputFormParam, cookie):
     # return OracleQuery.sqlAll(strSQL)
 
 #风控通过
-@logging(level='INFO', desc='风控通过')
+@runningRecorder(desc='风控通过')
 def transferRiskAudit(merchantTransferRequestId, cookie):
-    sqlId = 'select id from merchant_transfer_request where request_id = \'%s\'' %merchantTransferRequestId.decode()
+    sqlId = 'select id from merchant_transfer_request where request_id = \'%s\'' %merchantTransferRequestId#.decode()
     indexId = OracleQuery.sqlOne(sqlId)[0]
     transferRiskAuditActionList = ['/Admin/withdrawManage/merchantWithdrawManageAction_query',
                           '/Admin/withdrawManage/merchantWithdrawManageAction_mgconfirm?requestId=%s&fld1=0'%(indexId)]
@@ -56,9 +56,9 @@ def transferRiskAudit(merchantTransferRequestId, cookie):
     responseHtmlStr = responseByPostForm.text
 
 #财务通过
-@logging(level='INFO', desc = '财务通过')
+@runningRecorder(desc = '财务通过')
 def transferConfirm(merchantTransferRequestId, cookie):
-    sqlId = 'select id from merchant_transfer_request where request_id = \'%s\'' % merchantTransferRequestId.decode()
+    sqlId = 'select id from merchant_transfer_request where request_id = \'%s\'' % merchantTransferRequestId#.decode()
     indexId = OracleQuery.sqlOne(sqlId)[0]
     transferRiskAuditActionList = ['/Admin/withdrawManage/merchantWithdrawManageAction_query',
                                    '/Admin/withdrawManage/merchantWithdrawManageAction_mgfinanceConfirm?requestIds=%s|0' % (

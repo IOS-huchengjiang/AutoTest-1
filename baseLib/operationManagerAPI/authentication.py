@@ -2,10 +2,10 @@ import requests
 from baseLib.baseUtils import invokeJar
 import re
 from configuration import const
-from baseLib.baseUtils.recorder import logging
+from baseLib.baseUtils.recorder import runningRecorder
 
 #运营管理登录
-@logging(level='INFO', desc='运营管理登录')
+@runningRecorder(desc='运营管理登录')
 def login(usrDictionary):
     strUserName = usrDictionary.get('userName')
     strPassword = usrDictionary.get('password')

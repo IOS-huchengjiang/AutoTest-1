@@ -5,7 +5,7 @@ import hashlib
 import random
 import time
 import base64
-from baseLib.baseUtils.recorder import logging
+from baseLib.baseUtils.recorder import runningRecorder
 from pyDes import *
 from binascii import b2a_hex, a2b_hex
 ####################设置Key值##############
@@ -28,7 +28,7 @@ def requestId():
     CurrentTime = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     return 'auto' + CurrentTime + randomNum
 
-@logging(level='INFO', desc='执行挂起')
+@runningRecorder(desc='执行挂起')
 def waiting(sec):
     i = 0
     while  i < sec:

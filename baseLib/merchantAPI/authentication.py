@@ -1,11 +1,11 @@
 import requests
 from configuration import const
-from baseLib.baseUtils.recorder import logging
+from baseLib.baseUtils.recorder import runningRecorder
 import json
 from baseLib.commonAPI import OracleQuery
 from baseLib.commonAPI import commonUtils
 
-@logging(level='INFO', desc='获取商户自助登录短信验证码')
+@runningRecorder(desc='获取商户自助登录短信验证码')
 def sendMerchantSMS(usrDictionary):
     sendMerchantSMSParam = {'operatorName': usrDictionary.get('userName'),
                         'merchantNo': usrDictionary.get('merchantCode'),
@@ -22,7 +22,7 @@ def sendMerchantSMS(usrDictionary):
     else:
         return (False, responseByPostForm.text)
 
-@logging(level='INFO', desc='商户自助登录')
+@runningRecorder(desc='商户自助登录')
 def login(usrDictionary, smsTuple):
     loginParam = {'randomValidateId': smsTuple[1],
                   'sendFlag': '1',
