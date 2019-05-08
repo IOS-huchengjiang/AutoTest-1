@@ -2,7 +2,7 @@ import requests
 from lxml import etree
 from baseLib.commonAPI import OracleQuery
 from configuration import const
-from baseLib.baseUtils.log import logging
+from baseLib.baseUtils.recorder import logging
 
 
 #代发费率修改

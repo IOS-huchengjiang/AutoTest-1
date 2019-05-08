@@ -2,7 +2,7 @@ import requests
 from baseLib.baseUtils import invokeJar
 import re
 from configuration import const
-from baseLib.baseUtils.log import logging
+from baseLib.baseUtils.recorder import logging
 
 #运营管理登录
 @logging(level='INFO', desc='运营管理登录')
@@ -36,6 +36,7 @@ def login(usrDictionary):
                                        cookies = responseCookies)
     if responseAfterLogin.text.find('终端用户列表'):
         print(strUserName + '登录成功')
+        return (True, responseCookies)
     else:
         print(strUserName + '登录失败')
-    return responseCookies
+        return (False, responseAfterLogin.text)

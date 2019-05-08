@@ -21,5 +21,4 @@ def getEncodePassword(strTransferKey, strDate):
     encodeStr = javaClass.getCipher(strTransferKey, strDate)
     # jpype.shutdownJVM()#最后关闭jvm
     return encodeStr
-
 # print(getEncodePassword('41227312490261166168189947899258', 'xjd12345'))

@@ -2,7 +2,7 @@
 #autor :huchengjiang
 import requests
 from baseLib.commonAPI import commonUtils, OracleQuery
-from baseLib.baseUtils.log import logging
+from baseLib.baseUtils.recorder import logging
 from baseLib.operationManagerAPI.authentication import login
 from baseLib.operationManagerAPI.DisburseManager import transferRiskAudit
 from baseLib.operationManagerAPI.DisburseManager import transferConfirm
@@ -16,7 +16,7 @@ class transfer(unittest.TestCase):
         self.globalRequestId = None
 
     def setUp(self):
-        self.actionUrl = 'http://172.16.3.2:8080/main/singleTransfer_toTransfer'
+        self.actionUrl = 'http://172.16.3.9:8080/main/singleTransfer_toTransfer'
         # self.actionUrl = 'https://172.16.3.1/main/singleTransfer_toTransfer'
         self.requestSignatrueRule = ['requestId',
                                      'merchantCode',
@@ -86,15 +86,15 @@ class transfer(unittest.TestCase):
         requestStatus = str(OracleQuery.sqlAll(sqlStatus)[0][0])
         self.assertEqual('0', requestStatus)
 
-        cookies = login(const._global_configuration().optionManagerOperator)
+        returnTuple = login(const._global_configuration().optionManagerOperator)
         commonUtils.waiting(15)
         #风控通过
-        transferRiskAudit(self.inputParameter.get('requestId'), cookies)
+        transferRiskAudit(self.inputParameter.get('requestId'), returnTuple[1])
         requestStatus = str(OracleQuery.sqlAll(sqlStatus)[0][0])
         self.assertEqual('6', requestStatus)
 
         #财务通过
-        transferConfirm(self.inputParameter.get('requestId'), cookies)
+        transferConfirm(self.inputParameter.get('requestId'), returnTuple[1])
         requestStatus = str(OracleQuery.sqlAll(sqlStatus)[0][0])
         self.assertEqual('9', requestStatus)
 

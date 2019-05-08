@@ -4,8 +4,10 @@ import hmac
 import hashlib
 import random
 import time
-from baseLib.baseUtils.log import logging
-
+import base64
+from baseLib.baseUtils.recorder import logging
+from pyDes import *
+from binascii import b2a_hex, a2b_hex
 ####################设置Key值##############
 def md5Signature(param,ekey, rule):
     to_enc = ''
@@ -34,3 +36,17 @@ def waiting(sec):
         time.sleep(1)
         i += 1
 
+def encryptDes(str):
+    Des_Key = b"fL2*0a_-"
+    Des_IV = b"\x22\x33\x35\x81\xBC\x38\x5A\xE7"  # 自定IV向量（不知道什么用，官网例子就是这么写的）
+    k = des(Des_Key, ECB, Des_IV, pad=None, padmode=PAD_PKCS5)
+    encrystr = k.encrypt(str.encode())
+    return base64.b64encode(encrystr).decode()
+def decryptDes(encrystr):
+    Des_Key = b"fL2*0a_-"
+    Des_IV = b"\x22\x33\x35\x81\xBC\x38\x5A\xE7"  # 自定IV向量（不知道什么用，官网例子就是这么写的）
+    k = des(Des_Key, ECB, Des_IV, pad=None, padmode=PAD_PKCS5)
+    str = k.decrypt(base64.b64decode(encrystr))
+    return str.decode()
+# print('===========>', encryptDes('王娜'))
+# print('===========>', decryptDes('IWnIh3As5mg='))
